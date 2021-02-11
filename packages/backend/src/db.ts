@@ -6,7 +6,7 @@ import { User } from './models';
 
 const sequelize = new Sequelize('login-with-metamask-database', '', undefined, {
 	dialect: 'sqlite',
-	storage: path.join(os.tmpdir(), 'db.sqlite'),
+	storage: 'db.sqlite',
 	logging: false,
 });
 

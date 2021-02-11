@@ -120,23 +120,12 @@ export class Login extends React.Component<Props> {
 		const { loading } = this.state;
 		return (
 			<div>
-				<p>
-					Please select your login method.
-					<br />
-					For the purpose of this demo, only MetaMask login is
-					implemented.
-				</p>
+				<p>Please select your login with MetaMask.</p>
 				<button
 					className="Login-button Login-mm"
 					onClick={this.handleClick}
 				>
 					{loading ? 'Loading...' : 'Login with MetaMask'}
-				</button>
-				<button className="Login-button Login-fb" disabled>
-					Login with Facebook
-				</button>
-				<button className="Login-button Login-email" disabled>
-					Login with Email
 				</button>
 			</div>
 		);
