@@ -1,7 +1,6 @@
 import os from 'os';
 import path from 'path';
 import { INTEGER, Sequelize, STRING } from 'sequelize';
-
 import { User } from './models';
 
 const sequelize = new Sequelize('login-with-metamask-database', '', undefined, {
@@ -9,6 +8,16 @@ const sequelize = new Sequelize('login-with-metamask-database', '', undefined, {
 	storage: 'db.sqlite',
 	logging: false,
 });
+
+const keyGen = (): string => {
+	var text = "";
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+	for (var i = 0; i < 16; i++)
+	  text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+	return text;
+  }
 
 // Init all models
 User.init(
@@ -28,6 +37,11 @@ User.init(
 			type: STRING,
 			unique: true,
 		},
+		secretKey: {
+			allowNull: false,
+			type: STRING,
+			defaultValue: (): string => keyGen(), // Initialize with a random nonce
+		}
 	},
 	{
 		modelName: 'user',
