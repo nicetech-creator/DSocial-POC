@@ -1,6 +1,7 @@
 import './App.css';
 
 import React from 'react';
+import { HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import { Login } from '../Login';
 import { Profile } from '../Profile/Profile';
@@ -45,13 +46,23 @@ export class App extends React.Component<unknown, State> {
 					<h1 className="App-title">
 						Welcome to Decentralized Social POC
 					</h1>
+					<ul>
+						<li>
+							<a href="#/profile">My Profile</a>
+						</li>
+					</ul>
 				</header>
 				<div className="App-intro">
 					{auth ? (
-						<Profile
-							auth={auth}
-							onLoggedOut={this.handleLoggedOut}
-						/>
+						<HashRouter>
+							<Route path="/profile">
+								<Profile
+									auth={auth}
+									onLoggedOut={this.handleLoggedOut}
+								/>
+							</Route>
+							<Redirect to="/profile" /> :
+						</HashRouter>
 					) : (
 						<Login onLoggedIn={this.handleLoggedIn} />
 					)}
