@@ -21,6 +21,7 @@
 		"@types/express-jwt": "^0.0.42",
 		"@types/jsonwebtoken": "^8.5.0",
 		"@types/validator": "^13.1.0",
+		"axios": "^0.21.1",
 		"body-parser": "^1.18.3",
 		"cors": "^2.8.5",
 		"crypto-ts": "^1.0.2",

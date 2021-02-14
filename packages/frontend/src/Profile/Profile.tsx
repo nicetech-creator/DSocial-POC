@@ -78,7 +78,7 @@ export class Profile extends React.Component<Props, State> {
 		const {
 			auth: { accessToken },
 		} = this.props;
-		const { user, username } = this.state;
+		const { user, username, email, address } = this.state;
 
 		this.setState({ loading: true });
 
@@ -90,7 +90,7 @@ export class Profile extends React.Component<Props, State> {
 		}
 
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${user.id}`, {
-			body: JSON.stringify({ username }),
+			body: JSON.stringify({ username, email, address }),
 			headers: {
 				Authorization: `Bearer ${accessToken}`,
 				'Content-Type': 'application/json',

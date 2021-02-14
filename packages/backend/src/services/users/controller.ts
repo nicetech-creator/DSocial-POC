@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
-
+import { NextFunction, Request, response, Response } from 'express';
+import axios, {AxiosResponse} from 'axios';
 import { User } from '../../models/user.model';
 
 export const find = (req: Request, res: Response, next: NextFunction) => {
@@ -43,12 +43,23 @@ export const patch = (req: Request, res: Response, next: NextFunction) => {
 			.send({ error: 'You can can only access yourself' });
 	}
 	return User.findByPk(req.params.userId)
-		.then((user: User | null) => {
+		.then( async (user: User | null) => {
 			if (!user) {
 				return user;
 			}
 
-			Object.assign(user, req.body);
+			// Object.assign(user, req.body);
+			const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+			let response = await axios
+				.post(url, req.body, {
+					headers: {
+						pinata_api_key: "daf5ad2aa9551c702354",
+						pinata_secret_api_key: "d2fc6b79bae15c6850283cce863e461c9b454d3e7eba80a101b173eb1783fa67"
+					}
+				})
+			if (response.data){
+				user.ipfs = response.data.IpfsHash
+			}
 			return user.save();
 		})
 		.then((user: User | null) => {
