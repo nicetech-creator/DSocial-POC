@@ -16,6 +16,8 @@ interface State {
 	user?: {
 		id: number;
 		username: string;
+		email: string;
+		address: string;
 	};
 	username: string;
 	email: string;
@@ -116,17 +118,20 @@ export class Profile extends React.Component<Props, State> {
 		const { loading, user } = this.state;
 
 		const username = user && user.username;
-
+		const email = user && user.email;
+		const address = user && user.address;
 		return (
 			<div className="Profile">
 				<p>
 					Logged in as <Blockies seed={publicAddress} />
 				</p>
 				<div>
-					My username is{' '}
-					{username ? <pre>{username}</pre> : 'not set.'} My
-					publicAddress is <pre>{publicAddress}</pre>
+					User Name: {username ? <pre>{username}</pre> : 'not set.'}
+					Public Address: <pre>{publicAddress}</pre>
+					Email: {email ? <pre>{email}</pre> : 'not set.'}
+					Address: {address ? <pre>{address}</pre> : 'not set.'}
 				</div>
+				<hr />
 				<div>
 					<label htmlFor="username">username: </label>
 					<input name="username" onChange={this.handleChange} />

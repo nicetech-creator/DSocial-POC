@@ -1,4 +1,4 @@
-import { NextFunction, Request, response, Response } from 'express';
+import e, { NextFunction, Request, response, Response } from 'express';
 import axios, {AxiosResponse} from 'axios';
 import { User } from '../../models/user.model';
 
@@ -26,7 +26,32 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 			.send({ error: 'You can can only access yourself' });
 	}
 	return User.findByPk(req.params.userId)
-		.then((user: User | null) => res.json(user))
+		.then(async (user: User | null) => {
+			if (user == null) res.json(user)
+			else if (!user?.ipfs) res.json({
+				id: user?.id,
+				publicAddress: user?.publicAddress
+			})
+			else {
+				let url = `https://gateway.pinata.cloud/ipfs/${user.ipfs}`
+				let response = await axios.get(url)
+				if (response.data){
+					res.json({
+						id: user?.id,
+						publicAddress: user?.publicAddress,
+						username: response.data.username,
+						email: response.data.email,
+						address: response.data.address
+					})
+				} else {
+					res.json({
+						id: user?.id,
+						publicAddress: user?.publicAddress
+					})
+				}
+			}
+			
+		})
 		.catch(next);
 };
 
