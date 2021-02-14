@@ -18,6 +18,8 @@ interface State {
 		username: string;
 	};
 	username: string;
+	email: string;
+	address: string;
 }
 
 interface JwtDecoded {
@@ -32,6 +34,8 @@ export class Profile extends React.Component<Props, State> {
 		loading: false,
 		user: undefined,
 		username: '',
+		email: '',
+		address: '',
 	};
 
 	componentDidMount() {
@@ -56,6 +60,18 @@ export class Profile extends React.Component<Props, State> {
 		target: { value },
 	}: React.ChangeEvent<HTMLInputElement>) => {
 		this.setState({ username: value });
+	};
+
+	handleChangeEmail = ({
+		target: { value },
+	}: React.ChangeEvent<HTMLInputElement>) => {
+		this.setState({ email: value });
+	};
+
+	handleChangeAddress = ({
+		target: { value },
+	}: React.ChangeEvent<HTMLInputElement>) => {
+		this.setState({ address: value });
 	};
 
 	handleSubmit = () => {
@@ -117,11 +133,11 @@ export class Profile extends React.Component<Props, State> {
 				</div>
 				<div>
 					<label htmlFor="email">email: </label>
-					<input name="email" />
+					<input name="email" onChange={this.handleChangeEmail} />
 				</div>
 				<div>
 					<label htmlFor="address">address: </label>
-					<input name="address" />
+					<input name="address" onChange={this.handleChangeAddress} />
 				</div>
 				<p>
 					<button disabled={loading} onClick={this.handleSubmit}>
