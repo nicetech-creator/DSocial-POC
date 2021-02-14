@@ -5,6 +5,7 @@ import { HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import { Login } from '../Login';
 import { Profile } from '../Profile/Profile';
+import { Network } from '../Network/Network';
 import { Auth } from '../types';
 import logo from './logo.svg';
 
@@ -46,22 +47,33 @@ export class App extends React.Component<unknown, State> {
 					<h1 className="App-title">
 						Welcome to Decentralized Social POC
 					</h1>
-					<ul>
+					<ul className="menu">
 						<li>
 							<a href="#/profile">My Profile</a>
+						</li>
+						<li>
+							<a href="#/network">My Network</a>
 						</li>
 					</ul>
 				</header>
 				<div className="App-intro">
 					{auth ? (
 						<HashRouter>
-							<Route path="/profile">
-								<Profile
-									auth={auth}
-									onLoggedOut={this.handleLoggedOut}
-								/>
-							</Route>
-							<Redirect to="/profile" /> :
+							<Switch>
+								<Route path="/profile">
+									<Profile
+										auth={auth}
+										onLoggedOut={this.handleLoggedOut}
+									/>
+								</Route>
+								<Route path="/network">
+									<Network
+										auth={auth}
+										onLoggedOut={this.handleLoggedOut}
+									/>
+								</Route>
+								<Redirect to="/profile" /> :
+							</Switch>
 						</HashRouter>
 					) : (
 						<Login onLoggedIn={this.handleLoggedIn} />
