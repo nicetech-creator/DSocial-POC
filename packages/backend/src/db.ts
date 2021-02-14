@@ -41,6 +41,9 @@ User.init(
 			allowNull: false,
 			type: STRING,
 			defaultValue: (): string => keyGen(), // Initialize with a random nonce
+		},
+		ipfs: {
+			type: STRING
 		}
 	},
 	{
