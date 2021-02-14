@@ -112,12 +112,22 @@ export class Profile extends React.Component<Props, State> {
 					publicAddress is <pre>{publicAddress}</pre>
 				</div>
 				<div>
-					<label htmlFor="username">Change username: </label>
+					<label htmlFor="username">username: </label>
 					<input name="username" onChange={this.handleChange} />
+				</div>
+				<div>
+					<label htmlFor="email">email: </label>
+					<input name="email" />
+				</div>
+				<div>
+					<label htmlFor="address">address: </label>
+					<input name="address" />
+				</div>
+				<p>
 					<button disabled={loading} onClick={this.handleSubmit}>
 						Submit
 					</button>
-				</div>
+				</p>
 				<p>
 					<button onClick={onLoggedOut}>Logout</button>
 				</p>
