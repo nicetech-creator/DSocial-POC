@@ -6,6 +6,7 @@ import { HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Login } from '../Login';
 import { Profile } from '../Profile/Profile';
 import { Network } from '../Network/Network';
+import { User } from '../User/User';
 import { Auth } from '../types';
 import logo from './logo.svg';
 
@@ -68,6 +69,12 @@ export class App extends React.Component<unknown, State> {
 								</Route>
 								<Route path="/network">
 									<Network
+										auth={auth}
+										onLoggedOut={this.handleLoggedOut}
+									/>
+								</Route>
+								<Route path="/user/:id">
+									<User
 										auth={auth}
 										onLoggedOut={this.handleLoggedOut}
 									/>

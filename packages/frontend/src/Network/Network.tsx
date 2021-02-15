@@ -3,7 +3,7 @@ import './Network.css';
 import jwtDecode from 'jwt-decode';
 import React from 'react';
 import Blockies from 'react-blockies';
-
+import { Link } from 'react-router-dom';
 import { Auth } from '../types';
 
 interface Props {
@@ -74,13 +74,21 @@ export class Network extends React.Component<Props, State> {
 						</tr>
 					</thead>
 					<tbody>
-						{users?.map((u, idx) => (
-							<tr key={idx}>
-								<td>{u.id}</td>
-								<td>{u.publicAddress}</td>
-								<td>Allow</td>
-							</tr>
-						))}
+						{users?.map((u, idx) => {
+							if (u.publicAddress != publicAddress)
+								return (
+									<tr key={idx}>
+										<td>{u.id}</td>
+										<td>
+											<Link to={`/user/${u.id}`}>
+												{u.publicAddress}
+											</Link>
+										</td>
+										<td>Allow</td>
+									</tr>
+								);
+							else return null;
+						})}
 					</tbody>
 				</table>
 			</div>
