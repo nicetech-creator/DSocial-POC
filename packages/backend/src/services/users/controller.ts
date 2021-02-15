@@ -20,11 +20,11 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 	// AccessToken payload is in req.user.payload, especially its `id` field
 	// UserId is the param in /users/:userId
 	// We only allow user accessing herself, i.e. require payload.id==userId
-	if ((req as any).user.payload.id !== +req.params.userId) {
-		return res
-			.status(401)
-			.send({ error: 'You can can only access yourself' });
-	}
+	// if ((req as any).user.payload.id !== +req.params.userId) {
+	// 	return res
+	// 		.status(401)
+	// 		.send({ error: 'You can can only access yourself' });
+	// }
 	return User.findByPk(req.params.userId)
 		.then(async (user: User | null) => {
 			if (user == null) res.json(user)
