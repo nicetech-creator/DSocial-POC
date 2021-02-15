@@ -6,5 +6,6 @@ export class User extends Model {
 	public publicAddress!: string;
 	public username?: string; // for nullable fields
 	public secretKey!: string;
-	public ipfs? :string; // hash for ipfs node
+	public ipfs? : string; // hash for ipfs node
+	public friends! : string;
 }

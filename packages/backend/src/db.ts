@@ -44,6 +44,11 @@ User.init(
 		},
 		ipfs: {
 			type: STRING
+		},
+		friends: {
+			allowNull: false,
+			type: STRING,
+			defaultValue: (): string => JSON.stringify([]) // Initialize with a random nonce
 		}
 	},
 	{
