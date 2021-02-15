@@ -28,6 +28,11 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 	return User.findByPk(req.params.userId)
 		.then(async (user: User | null) => {
 			if (user == null) res.json(user)
+			else if((req as any).user.payload.id != req.params.userId && !user.friends.includes((req as any).user.payload.id)){
+				return res
+					.status(401)
+					.send({error: 'Only owner or friends can access profile.'})
+			}
 			else if (!user?.ipfs) res.json({
 				id: user?.id,
 				publicAddress: user?.publicAddress,
