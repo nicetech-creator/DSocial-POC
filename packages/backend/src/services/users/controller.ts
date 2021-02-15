@@ -1,6 +1,7 @@
 import e, { NextFunction, Request, response, Response } from 'express';
 import axios, {AxiosResponse} from 'axios';
 import { User } from '../../models/user.model';
+import { AES, enc } from 'crypto-ts';
 
 export const find = (req: Request, res: Response, next: NextFunction) => {
 	// If a query string ?publicAddress=... is given, then filter results
@@ -45,9 +46,9 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 					res.json({
 						id: user?.id,
 						publicAddress: user?.publicAddress,
-						username: response.data.username,
-						email: response.data.email,
-						address: response.data.address,
+						username: AES.decrypt(response.data.username, user.secretKey).toString(enc.Utf8),
+						email: AES.decrypt(response.data.email, user.secretKey).toString(enc.Utf8),
+						address: AES.decrypt(response.data.address, user.secretKey).toString(enc.Utf8),
 						friends: JSON.parse(user?.friends)
 					})
 				} else {
@@ -136,9 +137,14 @@ export const patch = (req: Request, res: Response, next: NextFunction) => {
 			}
 
 			// Object.assign(user, req.body);
+			let profileData = {
+				username: AES.encrypt(req.body.username, user.secretKey).toString(),
+				email: AES.encrypt(req.body.email, user.secretKey).toString(),
+				address: AES.encrypt(req.body.address, user.secretKey).toString()
+			}
 			const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
 			let response = await axios
-				.post(url, req.body, {
+				.post(url, profileData, {
 					headers: {
 						pinata_api_key: "daf5ad2aa9551c702354",
 						pinata_secret_api_key: "d2fc6b79bae15c6850283cce863e461c9b454d3e7eba80a101b173eb1783fa67"
