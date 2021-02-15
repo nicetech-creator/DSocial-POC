@@ -13,7 +13,13 @@ export const find = (req: Request, res: Response, next: NextFunction) => {
 			: undefined;
 
 	return User.findAll(whereClause)
-		.then((users: User[]) => res.json(users))
+		.then((users: User[]) => res.json(users.map((user => {
+			return {
+				id: user.id,
+				publicAddress: user.publicAddress,
+				nonce: user.nonce
+			}
+		}))))
 		.catch(next);
 };
 
