@@ -13,6 +13,10 @@ userRouter.route('/').get(controller.find);
 /** Authenticated route */
 userRouter.route('/:userId').get(jwt(config), controller.get);
 
+/** POST /api/users/add/:userId */
+/** Authenticated route */
+userRouter.route('/add/:userId').get(jwt(config), controller.grant);
+userRouter.route('/reverk/:userId').get(jwt(config), controller.reverk);
 /** POST /api/users */
 userRouter.route('/').post(controller.create);
 

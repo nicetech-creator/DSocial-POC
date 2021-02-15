@@ -30,7 +30,8 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 			if (user == null) res.json(user)
 			else if (!user?.ipfs) res.json({
 				id: user?.id,
-				publicAddress: user?.publicAddress
+				publicAddress: user?.publicAddress,
+				friends: JSON.parse(user?.friends)
 			})
 			else {
 				let url = `https://gateway.pinata.cloud/ipfs/${user.ipfs}`
@@ -41,18 +42,75 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 						publicAddress: user?.publicAddress,
 						username: response.data.username,
 						email: response.data.email,
-						address: response.data.address
+						address: response.data.address,
+						friends: JSON.parse(user?.friends)
 					})
 				} else {
 					res.json({
 						id: user?.id,
-						publicAddress: user?.publicAddress
+						publicAddress: user?.publicAddress,
+						friends: JSON.parse(user?.friends)
 					})
 				}
 			}
 		})
 		.catch(next);
 };
+
+export const grant = (req: Request, res: Response, next: NextFunction) => {
+	return User.findByPk((req as any).user.payload.id)
+		.then((user: User | null) => {
+			if (!user) {
+				return user;
+			}
+			let friends = JSON.parse(user.friends);
+			console.log("friends: ", friends);
+			if (!friends.includes(+req.params.userId)){
+				friends.push(parseInt(req.params.userId));
+				user.friends = JSON.stringify(friends);
+			}
+			return user.save();
+		})
+		.then((user: User | null) => {
+			return user
+				? res.json({
+					friends: JSON.parse(user.friends)
+				})
+				: res.status(401).send({
+						error: `User with publicAddress ${req.params.userId} is not found in database`,
+				});
+		})
+		.catch(next);
+}
+
+export const reverk = (req: Request, res: Response, next: NextFunction) => {
+	return User.findByPk((req as any).user.payload.id)
+		.then((user: User | null) => {
+			if (!user) {
+				return user;
+			}
+			let friends = JSON.parse(user.friends);
+			console.log("friends: ", friends);
+			if (friends.includes(+req.params.userId)){
+				let index = friends.indexOf(parseInt(req.params.userId));
+				if (index > -1) {
+					friends.splice(index, 1);
+				}
+				user.friends = JSON.stringify(friends);
+			}
+			return user.save();
+		})
+		.then((user: User | null) => {
+			return user
+				? res.json({
+					friends: JSON.parse(user.friends)
+				})
+				: res.status(401).send({
+						error: `User with publicAddress ${req.params.userId} is not found in database`,
+				});
+		})
+		.catch(next);
+}
 
 export const create = (req: Request, res: Response, next: NextFunction) =>
 	User.create(req.body)
